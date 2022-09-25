@@ -6,7 +6,7 @@ use GDO\User\GDO_User;
 
 final class GT
 {
-	public static function t(string $text, string $from=null, string $to=null)
+	public static function t(string $text, string $from=null, string $to=null) : string
 	{
 		$to = $to ? $to : GDO_User::current()->getLangISO();
 		$from = $from ? $from : 'auto';
@@ -23,7 +23,7 @@ final class GT
 		];
 		$url .= http_build_query($data);
 		$result = HTTP::getFromURL($url, false, false, $headers);
-		return $result;
+		return $result === false ? $text : $result;
 	}
 
 }
