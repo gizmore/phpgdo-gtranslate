@@ -47,7 +47,7 @@ final class T extends MethodForm
 		{
 			return $from;
 		}
-		return 'auto';
+		return GT::AUTO;
 	}
 	
 	private function getLangTo() : string

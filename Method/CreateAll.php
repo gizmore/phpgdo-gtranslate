@@ -47,13 +47,14 @@ final class CreateAll extends MethodForm
 	
 	public function translateLangFile(string $path, string $from, string $to, string $iso) : void
 	{
+		$fromPath = $path . "_{$from}.php";
 		$toPath = $path . "_{$iso}.php";
+
 		if (FileUtil::isFile($toPath))
 		{
 			$this->message('msg_gt_skip_file_exist', [html($fromPath)]);
 		}
 
-		$fromPath = $path . "_{$from}.php";
 		$text = file_get_contents($fromPath);
 		$translated = GT::t($text, $from, $to);
 		file_put_contents($toPath, $translated);
