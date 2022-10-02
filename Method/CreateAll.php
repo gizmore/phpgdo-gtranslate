@@ -7,7 +7,6 @@ use GDO\Form\GDT_Submit;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Language\GDT_Language;
 use GDO\Core\GDT_Char;
-use PhpMyAdmin\Plugins\Transformations\Text_Plain_Link;
 use GDO\Language\Trans;
 use GDO\Admin\MethodAdmin;
 use GDO\Util\FileUtil;

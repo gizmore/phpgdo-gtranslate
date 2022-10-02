@@ -37,8 +37,18 @@ final class T extends MethodForm
 		$from = $this->getLangFrom();
 		$to = $this->getLangTo();
 		$text = $this->gdoParameterVar('text');
-		$translated = GT::t($text, $from, $to);
-		$this->message('msg_translation', [$translated]);
+		$error = '';
+		$translated = GT::t($text, $from, $to, $error);
+		if ($error)
+		{
+			$this->error('%s', [$error]);
+		}
+		else
+		{
+			$translated = json_decode($translated);
+			$translated = $translated[0][0][0];
+			$this->message('msg_translation', [html($translated)]);
+		}
 	}
 
 	private function getLangFrom() : string
