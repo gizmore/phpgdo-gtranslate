@@ -23,7 +23,7 @@ final class GT
 		$headers = [
 			'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:14.0) Gecko/20100101 Firefox/14.0.1',
 		];
-		$url = "https://translate.googleapis.com/translate_a/single?";
+		$url = "https://translate.googleapis.com/translate_a/single";
 		$data = [
 			'client' => 'gtx',
 			'sl' => $from,
@@ -31,9 +31,19 @@ final class GT
 			'dt' => 't',
 			'q' => $text,
 		];
-		$url .= http_build_query($data);
-		$result = HTTP::getFromURL($url, false, false, $headers, $error);
+		$result = HTTP::post($url, $data, false, $headers, false, $error);
 		return $result === false ? $text : $result;
 	}
 
+	public static function composeTranslation(string $result) : string
+	{
+		$s = '';
+		$t = json_decode($result, true);
+		foreach ($t[0] as $tr)
+		{
+			$s .= $tr[0];
+		}
+		return $s;
+	}
+	
 }

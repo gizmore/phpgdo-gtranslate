@@ -18,7 +18,7 @@ use GDO\User\GDO_User;
  * @author gizmore
  * @TODO make use of the official gtranslate API.
  */
-final class T extends MethodForm
+class T extends MethodForm
 {
 	
 	public function createForm(GDT_Form $form) : void
@@ -41,17 +41,16 @@ final class T extends MethodForm
 		$translated = GT::t($text, $from, $to, $error);
 		if ($error)
 		{
-			$this->error('%s', [$error]);
+			$this->error('err_translate', [$error]);
 		}
 		else
 		{
-			$translated = json_decode($translated);
-			$translated = $translated[0][0][0];
+			$translated = GT::composeTranslation($translated);
 			$this->message('msg_translation', [html($translated)]);
 		}
 	}
 
-	private function getLangFrom() : string
+	protected function getLangFrom() : string
 	{
 		if ($from = $this->gdoParameterVar('from'))
 		{
@@ -60,7 +59,7 @@ final class T extends MethodForm
 		return GT::AUTO;
 	}
 	
-	private function getLangTo() : string
+	protected function getLangTo() : string
 	{
 		if ($to = $this->gdoParameterVar('to'))
 		{

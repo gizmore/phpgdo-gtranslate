@@ -9,8 +9,6 @@ use GDO\Language\GDT_Language;
 use GDO\Core\GDT_Char;
 use GDO\Language\Trans;
 use GDO\Admin\MethodAdmin;
-use GDO\Util\FileUtil;
-use GDO\GTranslate\GT;
 
 /**
  * Create an automated language pack with google translate.
@@ -38,26 +36,11 @@ final class CreateAll extends MethodForm
 		$from = $this->gdoParameterVar('from');
 		$to = $this->gdoParameterVar('to');
 		$iso = $this->gdoParameterVar('as_iso');
+		$create = Create::make();
 		foreach (Trans::$PATHS as $path)
 		{
-			$this->translateLangFile($path, $from, $to, $iso);
+			$create->translateLangFile($path, $from, $to, $iso);
 		}
-	}
-	
-	public function translateLangFile(string $path, string $from, string $to, string $iso) : void
-	{
-		$fromPath = $path . "_{$from}.php";
-		$toPath = $path . "_{$iso}.php";
-
-		if (FileUtil::isFile($toPath))
-		{
-			$this->message('msg_gt_skip_file_exist', [html($fromPath)]);
-		}
-
-		$text = file_get_contents($fromPath);
-		$translated = GT::t($text, $from, $to);
-		file_put_contents($toPath, $translated);
-		$this->message('msg_gt_translated', [html($path), $from, $to, $iso]);
 	}
 	
 }
