@@ -13,9 +13,14 @@ use GDO\Util\FileUtil;
 use GDO\GTranslate\GT;
 use GDO\Core\GDT_Module;
 use GDO\Core\GDT_Checkbox;
+use GDO\Core\GDO_Module;
+use GDO\Util\Filewalker;
+use GDO\Util\Strings;
 
 /**
  * Create an automated language pack with google translate.
+ * 
+ * @example gdo gt.create kass,en,de,de, 
  * @deprecated Use the official API
  * @author gizmore
  * @since 7.0.1
@@ -27,10 +32,12 @@ final class Create extends MethodForm
 	public function createForm(GDT_Form $form) : void
 	{
 		$form->addFields(
+			# optional
 			GDT_Checkbox::make('force')->initial('0'),
+			# positional
+			GDT_Module::make('module')->notNull()->installed()->uninstalled(),
 			GDT_Language::make('from')->notNull(),
 			GDT_Language::make('to')->notNull()->all(),
-			GDT_Module::make('module')->notNull()->installed()->uninstalled(),
 			GDT_Char::make('as_iso')->length(2)->notNull(),
 			GDT_AntiCSRF::make(),
 		);
@@ -42,6 +49,7 @@ final class Create extends MethodForm
 		$from = $this->gdoParameterVar('from');
 		$to = $this->gdoParameterVar('to');
 		$iso = $this->gdoParameterVar('as_iso');
+		/** @var $module GDO_Module **/
 		$module = $this->gdoParameterValue('module');
 		$moduleName = $module->getModuleName();
 		foreach (Trans::$PATHS as $path)
@@ -51,6 +59,19 @@ final class Create extends MethodForm
 				$this->translateLangFile($path, $from, $to, $iso);
 			}
 		}
+		
+		$path = $module->filePath('tpl');
+		$ptrn = "/_{$from}.php$/";
+		Filewalker::traverse($path, $ptrn, [$this, 'translteTemplateFile']);
+	}
+	
+	public function translteTemplateFile(string $entry, string $fullpath, $args=null) : void
+	{
+		$from = $this->gdoParameterVar('from');
+		$to = $this->gdoParameterVar('to');
+		$iso = $this->gdoParameterVar('as_iso');
+		$path = Strings::rsubstrFrom($fullpath, "_{$from}.php");
+		$this->translateLangFile($path, $from, $to, $iso);
 	}
 	
 	public function translateLangFile(string $path, string $from, string $to, string $iso)
