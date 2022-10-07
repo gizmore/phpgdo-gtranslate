@@ -21,6 +21,11 @@ use GDO\User\GDO_User;
 class T extends MethodForm
 {
 	
+	public function isTrivial(): bool
+	{
+		return false;
+	}
+	
 	public function createForm(GDT_Form $form) : void
 	{
 		$form->addFields(

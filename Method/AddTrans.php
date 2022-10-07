@@ -14,6 +14,11 @@ use GDO\Form\GDT_AntiCSRF;
  */
 final class AddTrans extends MethodForm
 {
+	public function isTrivial(): bool
+	{
+		return false;
+	}
+	
 	public function createForm(GDT_Form $form): void
 	{
 		$form->addFields(

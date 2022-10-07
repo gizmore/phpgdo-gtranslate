@@ -3,6 +3,7 @@ namespace GDO\GTranslate;
 
 use GDO\Net\HTTP;
 use GDO\User\GDO_User;
+use GDO\Core\Logger;
 
 /**
  * Google translation call without API key. Oops.
@@ -38,10 +39,16 @@ final class GT
 	public static function composeTranslation(string $result) : string
 	{
 		$s = '';
-		$t = json_decode($result, true);
-		foreach ($t[0] as $tr)
+		if ($t = @json_decode($result, true))
 		{
-			$s .= $tr[0];
+			foreach ($t[0] as $tr)
+			{
+				$s .= $tr[0];
+			}
+		}
+		else
+		{
+			Logger::logError('Cannot translate!');
 		}
 		return $s;
 	}

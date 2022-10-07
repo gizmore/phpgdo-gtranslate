@@ -29,6 +29,11 @@ final class Create extends MethodForm
 {
 	use MethodAdmin;
 	
+	public function isTrivial(): bool
+	{
+		return false;
+	}
+	
 	public function createForm(GDT_Form $form) : void
 	{
 		$form->addFields(

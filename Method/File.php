@@ -15,6 +15,11 @@ use GDO\Core\GDT_Path;
  */
 final class File extends T
 {
+	public function isTrivial(): bool
+	{
+		return false;
+	}
+	
 	public function createForm(GDT_Form $form): void
 	{
 		$form->addFields(
