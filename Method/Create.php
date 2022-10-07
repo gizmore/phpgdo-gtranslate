@@ -121,13 +121,14 @@ final class Create extends MethodForm
 			}
 			elseif (preg_match('/^[\\s#\\/]{2,}/', $tr[1]))
 			{
-				$s .= $tr[1];
+				# Comment adds extra whitespace
+				$s .= "\t\n" . $tr[1];
 			}
 			elseif (
 				(preg_match('/^\\s*[\'"]([^\'"]+)[\'"]\\s*=>\\s*(.*)/', $tr[0], $matchesTarget)) &&
 				(preg_match('/^\\s*[\'"]([^\'"]+)[\'"]\\s*=>\\s*(.*)/', $tr[1], $matchesSource)))
 			{
-				$s .= sprintf("'%s' => %s", $matchesSource[1], $matchesTarget[2]);
+				$s .= sprintf("\t'%s' => %s", $matchesSource[1], $matchesTarget[2]);
 			}
 			else
 			{
