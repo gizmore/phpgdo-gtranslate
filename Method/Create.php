@@ -59,18 +59,23 @@ final class Create extends MethodForm
 				$this->translateLangFile($path, $from, $to, $iso);
 			}
 		}
-		
+
+		# tpl/
+		$ptrn = "/_{$from}\\.php$/";
 		$path = $module->filePath('tpl');
-		$ptrn = "/_{$from}.php$/";
-		Filewalker::traverse($path, $ptrn, [$this, 'translteTemplateFile']);
+		Filewalker::traverse($path, $ptrn, [$this, 'translateTemplateFile']);
+	
+		# thm/
+		$path = $module->filePath('thm');
+		Filewalker::traverse($path, $ptrn, [$this, 'translateTemplateFile']);
 	}
 	
-	public function translteTemplateFile(string $entry, string $fullpath, $args=null) : void
+	public function translateTemplateFile(string $entry, string $fullpath, $args=null) : void
 	{
 		$from = $this->gdoParameterVar('from');
 		$to = $this->gdoParameterVar('to');
 		$iso = $this->gdoParameterVar('as_iso');
-		if ($path = Strings::rsubstrFrom($fullpath, "_{$from}.php"))
+		if ($path = Strings::substrTo($fullpath, "_{$from}.php"))
 		{
 			$this->translateLangFile($path, $from, $to, $iso);
 		}
