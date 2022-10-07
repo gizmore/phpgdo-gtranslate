@@ -70,8 +70,10 @@ final class Create extends MethodForm
 		$from = $this->gdoParameterVar('from');
 		$to = $this->gdoParameterVar('to');
 		$iso = $this->gdoParameterVar('as_iso');
-		$path = Strings::rsubstrFrom($fullpath, "_{$from}.php");
-		$this->translateLangFile($path, $from, $to, $iso);
+		if ($path = Strings::rsubstrFrom($fullpath, "_{$from}.php"))
+		{
+			$this->translateLangFile($path, $from, $to, $iso);
+		}
 	}
 	
 	public function translateLangFile(string $path, string $from, string $to, string $iso)
@@ -91,9 +93,43 @@ final class Create extends MethodForm
 		{
 			return $this->error('err_translate', [$error]);
 		}
-		$translated = GT::composeTranslation($translated);
+		$translated = self::composeTranslationForLangFile($translated);
 		file_put_contents($toPath, $translated);
 		return $this->message('msg_gt_translated', [html($path), $from, $to, $iso]);
+	}
+	
+	protected static function composeTranslationForLangFile(string $result) : string
+	{
+		$s = '';
+		$t = json_decode($result, true);
+		foreach ($t[0] as $tr)
+		{
+			$matchesSource = [];
+			$matchesTarget = [];
+			if (str_starts_with($tr[1], 'namespace GDO'))
+			{
+				$s .= $tr[1];
+			}
+			elseif (str_starts_with($tr[1], 'return '))
+			{
+				$s .= $tr[1];
+			}
+			elseif (preg_match('/^[\\s#\\/]{2,}/', $tr[1]))
+			{
+				$s .= $tr[1];
+			}
+			elseif (
+				(preg_match('/^\\s*[\'"]([^\'"]+)[\'"]\\s*=>\\s*(.*)/', $tr[0], $matchesTarget)) &&
+				(preg_match('/^\\s*[\'"]([^\'"]+)[\'"]\\s*=>\\s*(.*)/', $tr[1], $matchesSource)))
+			{
+				$s .= sprintf("'%s' => %s", $matchesSource[1], $matchesTarget[2]);
+			}
+			else
+			{
+				$s .= $tr[0];
+			}
+		}
+		return $s;
 	}
 	
 }
