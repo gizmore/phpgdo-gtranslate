@@ -124,6 +124,14 @@ final class Create extends MethodForm
 			{
 				$s .= $tr[1];
 			}
+			elseif (str_starts_with($tr[1], 'use '))
+			{
+				$s .= $tr[1];
+			}
+			elseif (str_starts_with($tr[1], '<'))
+			{
+				$s .= $tr[1];
+			}
 			elseif (preg_match('/^[\\s#\\/]{2,}/', $tr[1]))
 			{
 				# Comment adds extra whitespace
