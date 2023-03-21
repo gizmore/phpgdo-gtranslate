@@ -1,5 +1,6 @@
 <?php
 namespace GDO\GTranslate\lang;
+
 return [
 	'err_translate' => 'GTranslate Error: %s',
 	'msg_gt_skip_file_exist' => 'The file %s already exists and has been skipped.',

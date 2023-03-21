@@ -1,31 +1,33 @@
 <?php
 namespace GDO\GTranslate\Method;
 
-use GDO\Form\GDT_Form;
-use GDO\Form\MethodForm;
-use GDO\Form\GDT_Submit;
-use GDO\Form\GDT_AntiCSRF;
-use GDO\Language\GDT_Language;
-use GDO\Core\GDT_Char;
-use GDO\Language\Trans;
 use GDO\Admin\MethodAdmin;
+use GDO\Core\GDT_Char;
+use GDO\Form\GDT_AntiCSRF;
+use GDO\Form\GDT_Form;
+use GDO\Form\GDT_Submit;
+use GDO\Form\MethodForm;
+use GDO\Language\GDT_Language;
+use GDO\Language\Trans;
 
 /**
  * Create an automated language pack with google translate.
- * @deprecated Use the official API
- * @author gizmore
+ *
  * @since 7.0.1
+ * @author gizmore
+ * @deprecated Use the official API
  */
 final class CreateAll extends MethodForm
 {
+
 	use MethodAdmin;
-	
+
 	public function isTrivial(): bool
 	{
 		return false;
 	}
-	
-	public function createForm(GDT_Form $form) : void
+
+	public function createForm(GDT_Form $form): void
 	{
 		$form->addFields(
 			GDT_Language::make('from')->notNull(),
@@ -47,5 +49,5 @@ final class CreateAll extends MethodForm
 			$create->translateLangFile($path, $from, $to, $iso);
 		}
 	}
-	
+
 }

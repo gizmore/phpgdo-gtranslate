@@ -1,25 +1,26 @@
 <?php
 namespace GDO\GTranslate\Method;
 
+use GDO\Core\GDT_Path;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
 use GDO\Form\GDT_Submit;
 use GDO\GTranslate\GT;
 use GDO\Language\GDT_Language;
-use GDO\Core\GDT_Path;
 
 /**
  * Translate a file.
- * 
+ *
  * @author gizmore
  */
 final class File extends T
 {
+
 	public function isTrivial(): bool
 	{
 		return false;
 	}
-	
+
 	public function createForm(GDT_Form $form): void
 	{
 		$form->addFields(
@@ -51,5 +52,5 @@ final class File extends T
 			$this->message('msg_gt_translated', [$path, $from, $to]);
 		}
 	}
-	
+
 }

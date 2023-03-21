@@ -1,32 +1,32 @@
 <?php
 namespace GDO\GTranslate\Method;
 
+use GDO\Core\GDT_String;
+use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
+use GDO\Form\GDT_Submit;
 use GDO\Form\MethodForm;
 use GDO\GTranslate\GT;
-use GDO\Form\GDT_Submit;
-use GDO\Form\GDT_AntiCSRF;
 use GDO\Language\GDT_Language;
-use GDO\Core\GDT_String;
 use GDO\User\GDO_User;
 
 /**
  * Translate a string with google translate.
  * Defaults source language to auto.
  * Defaults target language to user language.
- * 
+ *
  * @author gizmore
  * @TODO make use of the official gtranslate API.
  */
 class T extends MethodForm
 {
-	
+
 	public function isTrivial(): bool
 	{
 		return false;
 	}
-	
-	public function createForm(GDT_Form $form) : void
+
+	public function createForm(GDT_Form $form): void
 	{
 		$form->addFields(
 			GDT_Language::make('from')->all(),
@@ -36,7 +36,7 @@ class T extends MethodForm
 		);
 		$form->actions()->addFields(GDT_Submit::make());
 	}
-	
+
 	public function formValidated(GDT_Form $form)
 	{
 		$from = $this->getLangFrom();
@@ -55,7 +55,7 @@ class T extends MethodForm
 		}
 	}
 
-	protected function getLangFrom() : string
+	protected function getLangFrom(): string
 	{
 		if ($from = $this->gdoParameterVar('from'))
 		{
@@ -63,8 +63,8 @@ class T extends MethodForm
 		}
 		return GT::AUTO;
 	}
-	
-	protected function getLangTo() : string
+
+	protected function getLangTo(): string
 	{
 		if ($to = $this->gdoParameterVar('to'))
 		{
@@ -72,5 +72,5 @@ class T extends MethodForm
 		}
 		return GDO_User::current()->getLangISO();
 	}
-	
+
 }
