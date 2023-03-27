@@ -2,6 +2,7 @@
 namespace GDO\GTranslate\Method;
 
 use GDO\Admin\MethodAdmin;
+use GDO\Core\GDT;
 use GDO\Core\GDT_Char;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
@@ -38,7 +39,7 @@ final class CreateAll extends MethodForm
 		$form->actions()->addField(GDT_Submit::make());
 	}
 
-	public function formValidated(GDT_Form $form)
+	public function formValidated(GDT_Form $form): GDT
 	{
 		$from = $this->gdoParameterVar('from');
 		$to = $this->gdoParameterVar('to');

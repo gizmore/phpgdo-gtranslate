@@ -1,6 +1,7 @@
 <?php
 namespace GDO\GTranslate\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\GDT_Path;
 use GDO\Form\GDT_AntiCSRF;
 use GDO\Form\GDT_Form;
@@ -32,7 +33,7 @@ final class File extends T
 		$form->actions()->addFields(GDT_Submit::make());
 	}
 
-	public function formValidated(GDT_Form $form)
+	public function formValidated(GDT_Form $form): GDT
 	{
 		$from = $this->getLangFrom();
 		$to = $this->getLangTo();

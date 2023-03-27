@@ -3,6 +3,7 @@ namespace GDO\GTranslate\Method;
 
 use GDO\Admin\MethodAdmin;
 use GDO\Core\GDO_Module;
+use GDO\Core\GDT;
 use GDO\Core\GDT_Char;
 use GDO\Core\GDT_Checkbox;
 use GDO\Core\GDT_Module;
@@ -50,7 +51,7 @@ final class Create extends MethodForm
 		$form->actions()->addField(GDT_Submit::make());
 	}
 
-	public function formValidated(GDT_Form $form)
+	public function formValidated(GDT_Form $form): GDT
 	{
 		$from = $this->gdoParameterVar('from');
 		$to = $this->gdoParameterVar('to');
